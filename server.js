@@ -142,7 +142,8 @@ function startCount() {
 function endCount() {
 	setTimeout(() => {
 		if (dist > centFar) {
-			drink = null
+            drink = null
+            temperatures = []
 			sendData('{ "temperature": ' + readTempData() +
 				 ', "time": ' + calcTime() + ',' +
 				 '"drink": "' + drink + '",' +

@@ -13,7 +13,7 @@ var _ready = true
 function startFunctio(msg){
     chatID = msg.chat.id
     bot.sendMessage(msg.chat.id, "Tudo certo, você será avisado quando sua bebida estiver no ponto", {"reply_markup": {
-        "keyboard": [["ver temperatura atual"], ["ver tempo que resta"], ["trocar bebida"]]
+        "keyboard": [["Ver temperatura atual"], ["Ver tempo que resta"], ["Trocar bebida"]]
         }
     })
 };
@@ -21,7 +21,7 @@ function startFunctio(msg){
 bot.onText(/\/start/, (msg) => {
     chatID = msg.chat.id
     bot.sendMessage(msg.chat.id, "bem vindo", {"reply_markup": {
-        "keyboard": [["ver temperatura atual"], ["ver tempo que resta"], ["escolher bebida"]]
+        "keyboard": [["Ver temperatura atual"], ["Ver tempo que resta"], ["Escolher bebida"]]
         }
     })
 });
@@ -42,7 +42,7 @@ bot.on('message', (msg) => {
 
     else if ((text == "cancelar")){
         bot.sendMessage(msg.chat.id, "bem vindo", {"reply_markup": {
-            "keyboard": [["ver temperatura atual"], ["ver tempo que resta"], ["escolher bebida"]]
+            "keyboard": [["Ver temperatura atual"], ["Ver tempo que resta"], ["Escolher bebida"]]
             }
         })
     }else{
@@ -51,7 +51,7 @@ bot.on('message', (msg) => {
             if (raspData.drink_on){
                 startFunctio(msg)
             }else{
-                bot.sendMessage(msg.chat.id, "coloque uma bebida")
+                bot.sendMessage(msg.chat.id, "Coloque uma bebida")
             }    
         }
     }
@@ -71,7 +71,7 @@ function time(msg){
         if (raspData.drink != 'null'){
             var leftTime = raspData.time
             if (leftTime <= 1){
-                bot.sendMessage(msg.chat.id, "Sua bebida estara pronta já já")
+                bot.sendMessage(msg.chat.id, "Sua bebida estará pronta já já")
             }
             else{
                 bot.sendMessage(msg.chat.id, "Sua bebida estará pronta em mais ou menos " + leftTime + " minutos")
@@ -83,7 +83,7 @@ function time(msg){
             })
         }
     }else{
-        bot.sendMessage(msg.chat.id, "device ainda não conectado")
+        bot.sendMessage(msg.chat.id, "Device ainda não conectado")
     }
 }
 
