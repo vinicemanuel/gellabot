@@ -8,6 +8,7 @@ const raspTopic = 'gellabot_rasp'
 var chatID = null
 var raspData = null
 var _escolhaBebida = true
+var _ready = true
 
 function startFunctio(msg){
     chatID = msg.chat.id
@@ -68,11 +69,12 @@ function temperature(msg){
 function time(msg){
     if (raspData != null){
         if (raspData.drink != 'null'){
-            var leftTime = raspData.time / 60000
-            if (leftTime < 0){
+            var leftTime = raspData.time
+            if (leftTime <= 1){
                 bot.sendMessage(msg.chat.id, "sua bebida estara pronta já já")
-            }else{
-                bot.sendMessage(msg.chat.id, "sua bebida estara pronta em mais ou menos " + leftTime + " minutos")
+            }
+            else{
+                bot.sendMessage(msg.chat.id, "sua bebida estará pronta em mais ou menos " + leftTime + " minutos")
             }
         }else{
             bot.sendMessage(msg.chat.id, "Bebida ainda não escolhida", {"reply_markup": {
@@ -98,12 +100,12 @@ client.on('message', (topic, message) => {
     raspData = JSON.parse(stringJson)
     console.log(raspData)
     if (raspData.ready){
-        if (_ready == false){
-            if (chatID){
+        if (chatID == false){
+            if (_ready){
                 bot.sendMessage(chatID, "Bora beber carai!!")
+                _ready = !_ready
             }
         }
-        _ready = raspData.ready
     }
 
     if (raspData.drink_on){
