@@ -71,10 +71,10 @@ function time(msg){
         if (raspData.drink != 'null'){
             var leftTime = raspData.time
             if (leftTime <= 1){
-                bot.sendMessage(msg.chat.id, "sua bebida estara pronta já já")
+                bot.sendMessage(msg.chat.id, "Sua bebida estara pronta já já")
             }
             else{
-                bot.sendMessage(msg.chat.id, "sua bebida estará pronta em mais ou menos " + leftTime + " minutos")
+                bot.sendMessage(msg.chat.id, "Sua bebida estará pronta em mais ou menos " + leftTime + " minutos")
             }
         }else{
             bot.sendMessage(msg.chat.id, "Bebida ainda não escolhida", {"reply_markup": {

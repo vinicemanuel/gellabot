@@ -120,7 +120,7 @@ function calcTime() {
 		if (resp === Infinity){
 			return tempTable[drink]
 		}else{
-			return resp
+			return Math.abs(resp).toFixed(0)
 		}
 	}else{
 		return 0
