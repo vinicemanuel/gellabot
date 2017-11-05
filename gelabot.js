@@ -60,7 +60,7 @@ function time(msg){
             if (leftTime < 0){
                 bot.sendMessage(msg.chat.id, "sua bebida estara pronta já já")
             }else{
-                bot.sendMessage(msg.chat.id, "sua bebida estara pronta em " + leftTime + " segundos")
+                bot.sendMessage(msg.chat.id, "sua bebida estara pronta em mais ou menos " + leftTime + " segundos")
             }
         }else{
             bot.sendMessage(msg.chat.id, "Bebida ainda não escolhida")
@@ -81,7 +81,11 @@ client.on('connect', () => {
 client.on('message', (topic, message) => {
     var stringJson = message.toString('utf8')
     raspData = JSON.parse(stringJson)
-    //console.log(raspData)
+    if (raspData.ready){
+        if (chatID){
+            bot.sendMessage(chatID, "Bora beber carai!!")
+        }
+    }
 })
 
 function sendData(data){
