@@ -12,8 +12,8 @@ var Gpio = require('pigpio').Gpio,
   echo = new Gpio(16, {mode: Gpio.INPUT, alert: true})
   
 // Variables
-var pollTime = 1 * 5 * 1000 // polling time
-var tollerance = 5000
+var pollTime = 2 * 60 * 1000 // polling time
+var tollerance = 10000
 var drink = null
 var timeTable = {
 	cerveja: 25,
@@ -24,7 +24,7 @@ var tempTable = {
 	vinho: 14,
 }
 var centFar = 5
-var dist = 99999
+var dist = Infinity
 var drinkOn = false
 var currentTime = 0
 var currentTemperature = -1
@@ -38,7 +38,7 @@ trigger.digitalWrite(0) // Make sure trigger is low
 var startTick;
  echo.on('alert', (level, tick) => {
     var endTick, diff
-    if (level == 1) {
+    if (level === 1) {
       startTick = tick
     } else {
       endTick = tick;
@@ -61,17 +61,15 @@ setInterval(() => {
 
 // Interval to check status
 var interval = setInterval(() => {
-	
 	sendData('{ "temperature": ' + readTempData() +
 			 ', "time": ' + calcTime() + ',' +
 			 '"drink": "' + drink + '",' +
 			 '"ready": ' + isReady() + ','+
 			 '"drink_on": ' + drinkOn + '}'
 	)
-	console.log('passou 1 minuto')
 	
 	// update base temperature
-	if (temperatures.length == 10){
+	if (temperatures.length === 10){
 		temperatures.pop()
 		temperatures.push(currentTemperature)
 	}else{
@@ -82,6 +80,7 @@ var interval = setInterval(() => {
 
 // Publish status on broker topic
 function sendData(data) {
+	console.log(data)
 	client.publish('gellabot_rasp', data)
 }
 
@@ -93,7 +92,7 @@ client.on('connect', () => {
 // Read data from sensor
 function readTempData() {
 	var readout = sensorLib.read()
-	if (temperatures.length == 0) {
+	if (temperatures.length === 0) {
 		temperatures.push(readout.temperature.toFixed(2))
 	}
 	
@@ -110,12 +109,9 @@ function isReady() {
 }
 
 // Calc time
-function calcTime() {
-	console.log(temperatures)
-	
+function calcTime() {	
 	if (drink){	
-		var dif = (parseFloat(temperatures[0]) - parseFloat(temperatures[temperatures.length - 1])) 
-		console.log(dif)
+		var dif = (parseFloat(temperatures[0]) - parseFloat(temperatures[temperatures.length - 1]))
 		var resp = ((temperatures.length * pollTime / 60000) * (currentTemperature - tempTable[drink])) / dif
 		if (resp === Infinity){
 			return tempTable[drink]
@@ -142,8 +138,8 @@ function startCount() {
 function endCount() {
 	setTimeout(() => {
 		if (dist > centFar) {
-            drink = null
-            temperatures = []
+			drink = null
+			temperatures = []
 			sendData('{ "temperature": ' + readTempData() +
 				 ', "time": ' + calcTime() + ',' +
 				 '"drink": "' + drink + '",' +
