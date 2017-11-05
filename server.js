@@ -112,8 +112,8 @@ function isReady() {
 function calcTime() {	
 	if (drink){	
 		var dif = (parseFloat(temperatures[0]) - parseFloat(temperatures[temperatures.length - 1]))
-		var resp = ((temperatures.length * pollTime / 60000) * (currentTemperature - tempTable[drink])) / dif
-		if (resp === Infinity){
+        var resp = ((temperatures.length * pollTime / 60000) * (currentTemperature - tempTable[drink])) / dif
+		if (Math.abs(resp) === Infinity){
 			return tempTable[drink]
 		}else{
 			return Math.abs(resp).toFixed(0)

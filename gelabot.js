@@ -100,9 +100,9 @@ client.on('message', (topic, message) => {
     raspData = JSON.parse(stringJson)
     console.log(raspData)
     if (raspData.ready){
-        if (chatID == false){
+        if (chatID){
             if (_ready){
-                bot.sendMessage(chatID, "Bora beber carai!!")
+                bot.sendMessage(chatID, "Bora beber!!")
                 _ready = !_ready
             }
         }
